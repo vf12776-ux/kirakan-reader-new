@@ -30,6 +30,29 @@
             margin: 10px;
         }
     </style>
+    <style>
+    #installButton {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 24px;
+        background: linear-gradient(to right, #FF69B4, #FF4500);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+        z-index: 9999;
+        transition: all 0.3s;
+    }
+    #installButton:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+    }
+</style>
 </head>
 <body>
     <script>
@@ -92,6 +115,35 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js');
   }
+</script>
+<button id="installButton">📲 Установить приложение</button>
+
+<script>
+    let installPrompt;
+    const installButton = document.getElementById('installButton');
+
+    // Показываем кнопку только когда браузер предлагает установку
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        installPrompt = e;
+        installButton.style.display = 'block';
+    });
+
+    // Клик по кнопке — запуск установки
+    installButton.addEventListener('click', () => {
+        if (installPrompt) {
+            installPrompt.prompt();
+            installPrompt.userChoice.then(() => {
+                installPrompt = null;
+                installButton.style.display = 'none';
+            });
+        }
+    });
+
+    // Скрываем кнопку после установки
+    window.addEventListener('appinstalled', () => {
+        installButton.style.display = 'none';
+    });
 </script>
 </body>
 </html>
