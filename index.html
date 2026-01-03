@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirakan Reader</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF69B4">
+    <style>
+        body, html { margin:0; padding:0; height:100%; overflow:hidden; }
+        #redirect-message {
+            text-align: center;
+            padding: 50px 20px;
+            font-family: Arial, sans-serif;
+        }
+        #redirect-message h1 {
+            color: #FF69B4;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #FF69B4;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+    // Если открыто как PWA - проверяем URL
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        // Если URL не корень - показываем iframe с сайтом
+        if (window.location.pathname !== '/') {
+            document.body.innerHTML = `
+                <iframe src="https://kirakan.ru/" 
+                        style="width:100%;height:100%;border:none;">
+                </iframe>
+            `;
+        }
+    }
+</script>
+    <div id="redirect-message">
+        <h1>Kirakan Reader</h1>
+        <p>Открываем сайт...</p>
+        <a href="https://kirakan.ru/" class="btn" id="open-link">
+            Перейти на сайт
+        </a>
+    </div>
+
+    <button id="install-btn">Установить приложение</button>
+
+    <script>
+        // Автоматический редирект при открытии PWA
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            // Если открыто как PWA - сразу редирект
+            window.location.href = "https://kirakan.ru/";
+        } else {
+            // Если открыто в браузере - показываем кнопку установки
+            document.getElementById('install-btn').style.display = 'block';
+            
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+            });
+
+            document.getElementById('install-btn').addEventListener('click', () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        console.log('PWA установлено');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+        }
+
+        // Клик по ссылке тоже открывает магазин
+        document.getElementById('open-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open('https://kirakan.ru/', '_blank');
+        });
+    </script>
+</body>
+</html>

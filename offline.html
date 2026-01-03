@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirakan Reader - Нет соединения</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px 20px;
+            background: #fff;
+            color: #333;
+        }
+        h1 {
+            color: #FF69B4;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #FF69B4;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #ff4da6;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📡</div>
+        <h1>Нет подключения к интернету</h1>
+        <p>Приложению требуется интернет для загрузки контента.</p>
+        <p>Пожалуйста, проверьте ваше интернет-соединение.</p>
+        <button onclick="window.location.reload()">Повторить попытку</button>
+        <p style="margin-top: 30px; font-size: 14px; color: #666;">
+            Приложение «Kirakan Reader» — читалка книг с kirakan.ru
+        </p>
+    </div>
+</body>
+</html>
